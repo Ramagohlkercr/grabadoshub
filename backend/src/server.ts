@@ -20,7 +20,8 @@ async function bootstrap() {
       if (env.NODE_ENV === 'development' && !isRemote) {
         logger.warn('⚠️ No se detectó un daemon local de MongoDB en localhost:27017.');
         logger.info('Iniciando MongoMemoryServer embebido para desarrollo local...');
-        const { MongoMemoryServer } = await import('mongodb-memory-server');
+        const memModule = 'mongodb-memory-server';
+        const { MongoMemoryServer } = (await import(memModule)) as any;
         const memoryServer = await MongoMemoryServer.create();
         mongoUri = memoryServer.getUri();
         logger.info(`Base de datos en memoria iniciada en: ${mongoUri}`);
