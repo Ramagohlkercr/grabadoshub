@@ -10,7 +10,13 @@ export async function connectToDatabase(customUri?: string): Promise<{ client: M
   }
 
   const uri = customUri || env.MONGODB_URI;
-  client = new MongoClient(uri);
+
+  // Use a shorter serverSelectionTimeout in development/test for quick fallback
+  const isDevOrTest = env.NODE_ENV !== 'production';
+  client = new MongoClient(uri, {
+    serverSelectionTimeoutMS: isDevOrTest ? 2000 : 10000,
+  });
+
   await client.connect();
 
   // If URI includes a database name in the path, use it; otherwise default to 'grabadoshub'
