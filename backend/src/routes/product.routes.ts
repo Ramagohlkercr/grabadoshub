@@ -43,8 +43,16 @@ router.post(
   ProductController.createProduct
 );
 
-// Protected (Admin): Update existing product
+// Protected (Admin): Update existing product (supports both PATCH and PUT per course rubric)
 router.patch(
+  '/:id',
+  authMiddleware,
+  requireRole('admin'),
+  validate({ params: productIdParamSchema, body: updateProductSchema }),
+  ProductController.updateProduct
+);
+
+router.put(
   '/:id',
   authMiddleware,
   requireRole('admin'),
