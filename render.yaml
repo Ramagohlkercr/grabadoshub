@@ -1,0 +1,54 @@
+services:
+  # -------------------------------------------------------------
+  # BACKEND: Express + TypeScript + Better Auth + MongoDB Atlas
+  # -------------------------------------------------------------
+  - type: web
+    name: grabadoshub-backend
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      - key: BETTER_AUTH_URL
+        fromService:
+          type: web
+          name: grabadoshub-backend
+          property: host
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: grabadoshub-frontend
+          property: host
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+
+  # -------------------------------------------------------------
+  # FRONTEND: React 18 + Vite + TypeScript (Static Site)
+  # -------------------------------------------------------------
+  - type: web
+    name: grabadoshub-frontend
+    runtime: static
+    plan: free
+    region: oregon
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://grabadoshub-backend.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html

@@ -1,0 +1,30 @@
+{
+  "name": "grabadoshub-monorepo",
+  "version": "1.0.0",
+  "description": "GRABADOSHUB — Plataforma Profesional de Catálogo y Administración de Grabados Láser (UAI TP 2)",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "test": "npm run test:backend && npm run test:frontend",
+    "seed:admin": "cd backend && npm run seed:admin",
+    "seed:products": "cd backend && npm run seed:products"
+  },
+  "keywords": [
+    "grabadoshub",
+    "laser-engraving",
+    "react",
+    "nodejs",
+    "express",
+    "better-auth",
+    "mongodb",
+    "uai"
+  ],
+  "author": "UAI - Metodologías y Desarrollos Web",
+  "license": "ISC"
+}
