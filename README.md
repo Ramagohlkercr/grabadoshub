@@ -6,17 +6,17 @@
 
 ---
 
-## 📌 URLs Oficiales del Proyecto (Completar para Entrega)
+## 📌 URLs Oficiales del Proyecto (Producción Activa)
 
 > [!IMPORTANT]
-> Los siguientes enlaces corresponden al despliegue final en producción. Completar los valores antes de la entrega definitiva al docente.
+> Los siguientes enlaces corresponden al despliegue final en producción, verificado de punta a punta con MongoDB Atlas en la nube, Better Auth y Render.
 
 - **🌐 Frontend (Sitio Público y Panel Admin):**  
-  `https://grabadoshub-frontend.onrender.com` *(o URL asignada por Render)*
+  [https://grabadoshub-frontend.onrender.com](https://grabadoshub-frontend.onrender.com)
 - **⚙️ Backend API REST (Health Check):**  
-  `https://grabadoshub-backend.onrender.com/api/health`
+  [https://grabadoshub-backend.onrender.com/api/health](https://grabadoshub-backend.onrender.com/api/health)
 - **📦 Repositorio GitHub:**  
-  `https://github.com/<TU_USUARIO>/grabadoshub` *(o URL del repositorio remoto)*
+  [https://github.com/Ramagohlkercr/grabadoshub](https://github.com/Ramagohlkercr/grabadoshub)
 
 ---
 
@@ -208,8 +208,8 @@ Base URL: `/api`
 
 ### Paso 1: Clonar el repositorio
 ```bash
-git clone <URL_DEL_REPOSITORIO>
-cd "TP WEB"
+git clone https://github.com/Ramagohlkercr/grabadoshub.git
+cd grabadoshub
 ```
 
 ### Paso 2: Instalar dependencias
