@@ -3,30 +3,42 @@ import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { admin } from 'better-auth/plugins/admin';
 import { Db } from 'mongodb';
 import { env } from '../config/env.js';
+import { logger } from '../utils/logger.util.js';
 
 let authInstance: ReturnType<typeof initAuth> | null = null;
 
 export function initAuth(db: Db) {
   const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {};
 
-  if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) {
+  const githubClientId = process.env.GITHUB_CLIENT_ID || env.GITHUB_CLIENT_ID;
+  const githubClientSecret = process.env.GITHUB_CLIENT_SECRET || env.GITHUB_CLIENT_SECRET;
+
+  if (githubClientId && githubClientSecret) {
     socialProviders.github = {
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
+      clientId: githubClientId,
+      clientSecret: githubClientSecret,
     };
+    logger.info('🔑 GitHub OAuth configurado y activado');
+  } else {
+    logger.warn('⚠️ GitHub OAuth no configurado. Para activarlo defina GITHUB_CLIENT_ID y GITHUB_CLIENT_SECRET en las variables de entorno.');
   }
+
+  const trustedOrigins = [
+    env.FRONTEND_URL,
+    env.BETTER_AUTH_URL,
+    'http://localhost:5173',
+    'http://localhost:4000',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:4000',
+    '*.onrender.com',
+    'https://*.onrender.com',
+  ];
 
   const auth = betterAuth({
     database: mongodbAdapter(db),
     secret: env.BETTER_AUTH_SECRET,
     baseURL: env.BETTER_AUTH_URL,
-    trustedOrigins: [
-      env.FRONTEND_URL,
-      'http://localhost:5173',
-      'http://localhost:4000',
-      'http://127.0.0.1:5173',
-      'http://127.0.0.1:4000',
-    ],
+    trustedOrigins,
     emailAndPassword: {
       enabled: true,
       minPasswordLength: 8,
@@ -47,7 +59,7 @@ export function initAuth(db: Db) {
 
 export function getAuth() {
   if (!authInstance) {
-    throw new Error('Auth not initialized. Call initAuth(db) first.');
+    throw new Error('Auth no inicializado. Debe invocar initAuth(db) previamente.');
   }
   return authInstance;
 }

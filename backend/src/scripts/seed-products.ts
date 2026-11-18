@@ -1,4 +1,4 @@
-import { connectToDatabase, closeDatabase, getDb } from '../config/database.js';
+import { connectToDatabase, closeDatabase, getDb, isRemoteMongoUri } from '../config/database.js';
 import { logger } from '../utils/logger.util.js';
 import { env } from '../config/env.js';
 import { Product } from '../models/product.model.js';
@@ -170,12 +170,22 @@ async function seedProducts() {
     let mongoUri = env.MONGODB_URI;
     try {
       await connectToDatabase(mongoUri);
-    } catch {
-      logger.warn('⚠️ Starting embedded MongoMemoryServer for seed...');
-      const { MongoMemoryServer } = await import('mongodb-memory-server');
-      const memoryServer = await MongoMemoryServer.create();
-      mongoUri = memoryServer.getUri();
-      await connectToDatabase(mongoUri);
+    } catch (dbError) {
+      const isRemote = isRemoteMongoUri(mongoUri);
+
+      if (env.NODE_ENV === 'development' && !isRemote) {
+        logger.warn('⚠️ MongoDB local no disponible. Iniciando MongoMemoryServer para seed local...');
+        const { MongoMemoryServer } = await import('mongodb-memory-server');
+        const memoryServer = await MongoMemoryServer.create();
+        mongoUri = memoryServer.getUri();
+        await connectToDatabase(mongoUri);
+      } else {
+        logger.error(
+          '❌ Error conectando a MongoDB para el seed de productos. En producción o con MongoDB Atlas se exige una base persistente real.'
+        );
+        logger.error('Verifique que MONGODB_URI sea correcta y que la IP esté habilitada en MongoDB Atlas (Network Access).');
+        throw dbError;
+      }
     }
 
     const db = getDb();

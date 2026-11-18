@@ -59,10 +59,15 @@ export const LoginPage: React.FC = () => {
 
   const handleGitHubLogin = async () => {
     try {
-      await signIn.social({
+      const res = await signIn.social({
         provider: 'github',
         callbackURL: window.location.origin + '/admin/dashboard',
       });
+      if (res?.error) {
+        toast.error(res.error.message || 'GitHub OAuth no configurado en el servidor.');
+      } else if (res?.data?.url) {
+        window.location.href = res.data.url;
+      }
     } catch {
       toast.error('No se pudo iniciar el flujo de GitHub OAuth');
     }

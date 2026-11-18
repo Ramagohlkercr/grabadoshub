@@ -12,6 +12,9 @@ import apiRoutes from './routes/index.js';
 export function createApp(): Express {
   const app = express();
 
+  // Trust reverse proxy (Essential on Render, Heroku and cloud deployments for secure cookies and accurate client IP)
+  app.set('trust proxy', 1);
+
   // Security Headers via Helmet
   app.use(
     helmet({
@@ -23,6 +26,7 @@ export function createApp(): Express {
   // CORS Configuration
   const allowedOrigins = [
     env.FRONTEND_URL,
+    env.BETTER_AUTH_URL,
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:4000',
@@ -32,12 +36,16 @@ export function createApp(): Express {
   app.use(
     cors({
       origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps, curl, server-to-server)
+        // Allow server-to-server, mobile or same-origin requests with no origin header
         if (!origin) return callback(null, true);
-        if (allowedOrigins.includes(origin) || origin.endsWith('.onrender.com')) {
+        if (
+          allowedOrigins.includes(origin) ||
+          origin.endsWith('.onrender.com') ||
+          origin.includes('localhost')
+        ) {
           return callback(null, true);
         }
-        return callback(null, true); // Allow during dev/preview; credentials protect session
+        return callback(null, true);
       },
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
@@ -46,7 +54,7 @@ export function createApp(): Express {
     })
   );
 
-  // Better Auth Route Handler - MUST be mounted before generic json parsers if it parses stream
+  // Better Auth Route Handler - mounted before generic json parsers
   app.all('/api/auth/*', authLimiter, (req, res) => {
     const auth = getAuth();
     return toNodeHandler(auth)(req, res);
