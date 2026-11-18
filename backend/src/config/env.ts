@@ -3,13 +3,15 @@ import { z } from 'zod';
 
 dotenv.config();
 
-const normalizeUrl = (val: string, defaultProtocol = 'https://') => {
+const defaultProtocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
+
+const normalizeUrl = (val: string, defProto = defaultProtocol) => {
   if (!val || val.trim() === '') return val;
   const trimmed = val.trim();
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
     return trimmed;
   }
-  return `${defaultProtocol}${trimmed}`;
+  return `${defProto}${trimmed}`;
 };
 
 const envSchema = z.object({
@@ -22,12 +24,12 @@ const envSchema = z.object({
     .default('grabadoshub_super_secret_dev_key_32_chars_min!'),
   BETTER_AUTH_URL: z
     .string()
-    .transform((val) => normalizeUrl(val, 'http://'))
+    .transform((val) => normalizeUrl(val))
     .pipe(z.string().url())
     .default('http://localhost:4000'),
   FRONTEND_URL: z
     .string()
-    .transform((val) => normalizeUrl(val, 'http://'))
+    .transform((val) => normalizeUrl(val))
     .default('http://localhost:5173'),
   GITHUB_CLIENT_ID: z.string().optional().default(''),
   GITHUB_CLIENT_SECRET: z.string().optional().default(''),
