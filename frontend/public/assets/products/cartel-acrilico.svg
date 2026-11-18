@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" rx="16" fill="#F0EDE7"/>
+  <!-- Wall drop shadow -->
+  <rect x="75" y="65" width="260" height="160" rx="8" fill="#D5D2CA" opacity="0.6"/>
+  <!-- Acrylic glass surface -->
+  <rect x="70" y="60" width="260" height="160" rx="8" fill="#FFFFFF" fill-opacity="0.85" stroke="#BFD7EA" stroke-width="2"/>
+  <!-- Chrome standoff bolts -->
+  <circle cx="85" cy="75" r="7" fill="#C0C6CE" stroke="#7E8793" stroke-width="1.5"/>
+  <circle cx="315" cy="75" r="7" fill="#C0C6CE" stroke="#7E8793" stroke-width="1.5"/>
+  <circle cx="85" cy="205" r="7" fill="#C0C6CE" stroke="#7E8793" stroke-width="1.5"/>
+  <circle cx="315" cy="205" r="7" fill="#C0C6CE" stroke="#7E8793" stroke-width="1.5"/>
+  <!-- Inverted laser engraving frosted effect -->
+  <rect x="110" y="95" width="180" height="70" rx="4" fill="none" stroke="#A66B50" stroke-width="2"/>
+  <text x="200" y="130" font-family="sans-serif" font-size="18" font-weight="800" fill="#20201E" text-anchor="middle" letter-spacing="2">GRABADOSHUB</text>
+  <text x="200" y="150" font-family="sans-serif" font-size="10" font-weight="600" fill="#A66B50" text-anchor="middle" letter-spacing="1">STUDIO &amp; LAB</text>
+  <text x="200" y="275" font-family="sans-serif" font-size="12" font-weight="600" fill="#77756F" text-anchor="middle">ACRÍLICO CRISTAL 6MM • ESMERILADO INVERTIDO</text>
+</svg>

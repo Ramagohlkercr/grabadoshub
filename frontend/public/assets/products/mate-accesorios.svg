@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" rx="16" fill="#F0EDE7"/>
+  <!-- Bombilla -->
+  <line x1="220" y1="40" x2="190" y2="150" stroke="#CBD5E1" stroke-width="6" stroke-linecap="round"/>
+  <!-- Mate body -->
+  <path d="M140 100 Q120 180 160 215 Q200 225 240 215 Q280 180 260 100 Z" fill="#20201E" stroke="#0E0E0D" stroke-width="3"/>
+  <ellipse cx="200" cy="100" rx="60" ry="12" fill="#3D4046"/>
+  <!-- Laser engraved perimeter band -->
+  <path d="M145 140 Q200 155 255 140" fill="none" stroke="#A66B50" stroke-width="3"/>
+  <circle cx="200" cy="170" r="14" fill="none" stroke="#EAE8E2" stroke-width="2"/>
+  <polygon points="200,162 208,175 192,175" fill="#EAE8E2"/>
+  <text x="200" y="275" font-family="sans-serif" font-size="12" font-weight="600" fill="#77756F" text-anchor="middle">MATE TÉRMICO • GRABADO PERIMETRAL</text>
+</svg>
