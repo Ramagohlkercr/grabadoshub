@@ -6,7 +6,7 @@ import { connectToDatabase, closeDatabase, getDb } from '../config/database.js';
 import { initAuth } from '../auth/auth.js';
 import { Express } from 'express';
 
-describe('GrabadosHub Backend REST API & Auth Suite', () => {
+describe('API REST y Autenticación', () => {
   let mongod: MongoMemoryServer;
   let app: Express;
   let auth: ReturnType<typeof initAuth>;

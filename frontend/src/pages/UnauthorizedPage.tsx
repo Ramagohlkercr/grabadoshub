@@ -27,17 +27,9 @@ export const UnauthorizedPage: React.FC = () => {
             Permisos Insuficientes
           </h1>
           <p className="text-sm text-[#77756F] max-w-md mx-auto leading-relaxed">
-            El área que intentás acceder está reservada exclusivamente para usuarios con el rol{' '}
-            <strong className="text-[#20201E]">ADMIN</strong>. Tu cuenta actual (
+            Esta sección es de acceso exclusivo para administradores. Tu cuenta actual (
             <span className="font-semibold text-[#20201E]">{session?.user?.email || 'Visitante'}</span>
-            ) tiene el rol de cliente/usuario regular.
-          </p>
-        </div>
-
-        <div className="p-4 bg-[#F7F6F3] rounded-2xl border border-[#EAE8E2] text-xs text-[#77756F] text-left space-y-1">
-          <p className="font-semibold text-[#20201E]">¿Por qué ocurre esto?</p>
-          <p>
-            El sistema de GrabadosHub aplica control de acceso basado en roles tanto en el frontend como en los controladores del backend REST. Las acciones de administración no están permitidas para cuentas estándar.
+            ) no tiene permisos para acceder al panel.
           </p>
         </div>
 

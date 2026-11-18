@@ -7,7 +7,7 @@ import { initAuth } from '../auth/auth.js';
 import { Express } from 'express';
 import { Db, ObjectId } from 'mongodb';
 
-describe('GrabadosHub End-to-End (E2E) Full Lifecycle Audit Suite', () => {
+describe('Pruebas E2E de Ciclo Completo', () => {
   let mongod: MongoMemoryServer;
   let app: Express;
   let db: Db;

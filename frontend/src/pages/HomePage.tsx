@@ -45,35 +45,35 @@ export const HomePage: React.FC = () => {
         <div className="relative max-w-7xl mx-auto flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#363633] text-[#A66B50] text-xs font-bold tracking-wider uppercase mb-6 border border-[#474744]">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Tecnología Láser CNC &amp; Fibra Óptica</span>
+            <span>Grabados y Diseños Personalizados</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight max-w-4xl leading-tight">
-            Precisión Milimétrica en Grabados Personalizados
+            Artículos y Productos con Grabado Láser
           </h1>
 
           <p className="mt-5 text-sm sm:text-base text-[#D7D5CE] max-w-2xl leading-relaxed">
-            Catálogo profesional para regalos corporativos, señalética de diseño e identificación técnica.
-            Personalización indeleble sobre ecocuero, poliamida, acrílico óptico y accesorios de acero.
+            Catálogo de artículos grabados en ecocuero, acrílico, poliamida y accesorios de acero.
+            Consultá disponibilidad, precios y detalles de cada producto.
           </p>
 
           {/* Quick Metrics Bar */}
           <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-3xl pt-8 border-t border-[#363633]">
             <div className="p-3 bg-[#2A2A27] rounded-xl border border-[#3E3E3B]">
-              <span className="block text-xl font-black text-[#A66B50]">&lt; 0.05 mm</span>
-              <span className="text-[11px] text-[#A8A6A0] font-medium">Tolerancia focal</span>
+              <span className="block text-xl font-black text-[#A66B50]">A Medida</span>
+              <span className="text-[11px] text-[#A8A6A0] font-medium">Grabados personalizados</span>
             </div>
             <div className="p-3 bg-[#2A2A27] rounded-xl border border-[#3E3E3B]">
-              <span className="block text-xl font-black text-[#64836D]">100%</span>
-              <span className="text-[11px] text-[#A8A6A0] font-medium">Grabado indeleble</span>
+              <span className="block text-xl font-black text-[#64836D]">En Stock</span>
+              <span className="text-[11px] text-[#A8A6A0] font-medium">Entrega inmediata</span>
             </div>
             <div className="p-3 bg-[#2A2A27] rounded-xl border border-[#3E3E3B]">
-              <span className="block text-xl font-black text-white">4 Materiales</span>
-              <span className="text-[11px] text-[#A8A6A0] font-medium">Líneas especializadas</span>
+              <span className="block text-xl font-black text-white">4 Líneas</span>
+              <span className="text-[11px] text-[#A8A6A0] font-medium">Materiales seleccionados</span>
             </div>
             <div className="p-3 bg-[#2A2A27] rounded-xl border border-[#3E3E3B]">
-              <span className="block text-xl font-black text-[#A66B50]">Control Total</span>
-              <span className="text-[11px] text-[#A8A6A0] font-medium">Panel de gestión</span>
+              <span className="block text-xl font-black text-[#A66B50]">Panel Admin</span>
+              <span className="text-[11px] text-[#A8A6A0] font-medium">Gestión del catálogo</span>
             </div>
           </div>
         </div>

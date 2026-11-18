@@ -18,9 +18,9 @@ export function initAuth(db: Db) {
       clientId: githubClientId,
       clientSecret: githubClientSecret,
     };
-    logger.info('🔑 GitHub OAuth configurado y activado');
+    logger.info('GitHub OAuth activado.');
   } else {
-    logger.warn('⚠️ GitHub OAuth no configurado. Para activarlo defina GITHUB_CLIENT_ID y GITHUB_CLIENT_SECRET en las variables de entorno.');
+    logger.warn('GitHub OAuth no configurado (falta GITHUB_CLIENT_ID o GITHUB_CLIENT_SECRET).');
   }
 
   const trustedOrigins = [

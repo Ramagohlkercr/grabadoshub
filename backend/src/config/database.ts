@@ -29,24 +29,22 @@ export async function connectToDatabase(customUri?: string): Promise<{ client: M
   });
 
   await client.connect();
-
-  // If URI includes a database name in the path, use it; otherwise default to 'grabadoshub'
   db = client.db();
 
-  console.log(`✅ Conexión establecida con MongoDB (${isRemote ? 'Remoto / Atlas' : 'Local'})`);
+  console.log(`Conectado a MongoDB (${isRemote ? 'remoto' : 'local'})`);
   return { client, db };
 }
 
 export function getDb(): Db {
   if (!db) {
-    throw new Error('Base de datos no inicializada. Debe invocar connectToDatabase() previamente.');
+    throw new Error('Base de datos no inicializada.');
   }
   return db;
 }
 
 export function getMongoClient(): MongoClient {
   if (!client) {
-    throw new Error('MongoClient no inicializado. Debe invocar connectToDatabase() previamente.');
+    throw new Error('MongoClient no inicializado.');
   }
   return client;
 }
@@ -56,6 +54,6 @@ export async function closeDatabase(): Promise<void> {
     await client.close();
     client = null;
     db = null;
-    console.log('Conexión con MongoDB cerrada ordenadamente.');
+    console.log('Conexión con MongoDB cerrada.');
   }
 }

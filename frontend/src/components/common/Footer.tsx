@@ -18,10 +18,10 @@ export const Footer: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-[#77756F] leading-relaxed">
-              Solución integral para catálogo y personalización industrial y artesanal con tecnología láser CNC de alta frecuencia.
+              Catálogo y sistema de administración de productos con grabado láser personalizado.
             </p>
             <div className="pt-2 text-[11px] text-[#77756F]">
-              <span className="font-semibold text-[#20201E]">UAI</span> • Metodologías y Desarrollos Web (TP 2)
+              <span className="font-semibold text-[#20201E]">UAI</span> • Metodologías y Desarrollos Web
             </div>
           </div>
 
@@ -103,9 +103,9 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="mt-12 pt-6 border-t border-[#EAE8E2] flex flex-col sm:flex-row items-center justify-between text-xs text-[#77756F] gap-4">
-          <p>© {new Date().getFullYear()} GrabadosHub. Plataforma de evaluación académica UAI.</p>
+          <p>© {new Date().getFullYear()} GrabadosHub — TP 2 Metodologías y Desarrollos Web (UAI)</p>
           <p className="flex items-center gap-1">
-            Diseño e ingeniería Full Stack con arquitectura modular y seguridad Better Auth.
+            Desarrollado con React, Express y MongoDB
           </p>
         </div>
       </div>

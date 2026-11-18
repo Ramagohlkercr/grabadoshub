@@ -174,25 +174,20 @@ async function seedProducts() {
       const isRemote = isRemoteMongoUri(mongoUri);
 
       if (env.NODE_ENV === 'development' && !isRemote) {
-        logger.warn('⚠️ MongoDB local no disponible. Iniciando MongoMemoryServer para seed local...');
-        const { MongoMemoryServer } = await import('mongodb-memory-server');
+        logger.info('Iniciando base de datos en memoria para el seed...');
+        const memModule = 'mongodb-memory-server';
+        const { MongoMemoryServer } = (await import(memModule)) as any;
         const memoryServer = await MongoMemoryServer.create();
         mongoUri = memoryServer.getUri();
         await connectToDatabase(mongoUri);
       } else {
-        logger.error(
-          '❌ Error conectando a MongoDB para el seed de productos. En producción o con MongoDB Atlas se exige una base persistente real.'
-        );
-        logger.error('Verifique que MONGODB_URI sea correcta y que la IP esté habilitada en MongoDB Atlas (Network Access).');
+        logger.error('Error conectando a MongoDB:', dbError);
         throw dbError;
       }
     }
 
     const db = getDb();
     const collection = db.collection<Product>('products');
-
-    const currentCount = await collection.countDocuments();
-    logger.info(`Existing products count: ${currentCount}`);
 
     const now = new Date();
     const productsToInsert = DEMO_PRODUCTS.map((prod, index) => ({
@@ -201,7 +196,6 @@ async function seedProducts() {
       updatedAt: now,
     }));
 
-    // If already has products, update them or insert missing
     for (const item of productsToInsert) {
       await collection.updateOne(
         { name: item.name },
@@ -211,7 +205,7 @@ async function seedProducts() {
     }
 
     const finalCount = await collection.countDocuments();
-    logger.info(`✅ Successfully seeded catalog! Total products now: ${finalCount}`);
+    logger.info(`Catálogo actualizado. Total productos: ${finalCount}`);
 
     await closeDatabase();
     process.exit(0);
