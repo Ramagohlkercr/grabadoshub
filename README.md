@@ -2,7 +2,21 @@
 
 > **Trabajo Práctico N° 2 — Metodologías y Desarrollos Web**  
 > **Universidad Abierta Interamericana (UAI)**  
-> **Estado:** Producto Full Stack funcional, testeado y listo para producción académica.
+> **Estado:** Producto Full Stack funcional, auditado, testeado y listo para producción académica.
+
+---
+
+## 📌 URLs Oficiales del Proyecto (Completar para Entrega)
+
+> [!IMPORTANT]
+> Los siguientes enlaces corresponden al despliegue final en producción. Completar los valores antes de la entrega definitiva al docente.
+
+- **🌐 Frontend (Sitio Público y Panel Admin):**  
+  `https://grabadoshub-frontend.onrender.com` *(o URL asignada por Render)*
+- **⚙️ Backend API REST (Health Check):**  
+  `https://grabadoshub-backend.onrender.com/api/health`
+- **📦 Repositorio GitHub:**  
+  `https://github.com/<TU_USUARIO>/grabadoshub` *(o URL del repositorio remoto)*
 
 ---
 
@@ -45,7 +59,7 @@ El sistema ofrece dos experiencias complementarias:
 - **Zod**: Validación y sanitización de todas las entradas (parámetros de ruta, queries y cuerpo de requests).
 
 ### Testing & Calidad
-- **Vitest**: Suite automatizada para backend y frontend con ejecución de 21 tests de integración y componentes.
+- **Vitest**: Suite automatizada para backend y frontend con ejecución de **40 pruebas** de integración, E2E y componentes.
 - **Supertest**: Simulación de requests HTTP con cookies de sesión y verificación de códigos de estado.
 - **React Testing Library** + **JSDOM**: Pruebas de accesibilidad, filtros, tarjetas y formularios.
 - **MongoDB Memory Server**: Base de datos en memoria para testing y ejecución local sin dependencias externas.
@@ -83,7 +97,7 @@ El repositorio respeta estrictamente la estructura modular exigida:
 │   │   ├── schemas/             # Esquemas de validación Zod para productos y queries
 │   │   ├── scripts/             # Scripts de seed para admin inicial y productos
 │   │   ├── services/            # Lógica de negocio y consultas MongoDB
-│   │   ├── tests/               # Pruebas automatizadas de integración
+│   │   ├── tests/               # Pruebas automatizadas (api.test.ts, e2e.test.ts)
 │   │   ├── types/               # Extensión de tipos de Express (Request.user)
 │   │   ├── utils/               # Formateadores de respuesta JSON y logger
 │   │   ├── app.ts               # Ensamblado de Express, CORS, Helmet y middlewares
@@ -126,7 +140,7 @@ El repositorio respeta estrictamente la estructura modular exigida:
 │   └── vitest.config.ts
 │
 ├── render.yaml                  # Blueprint de infraestructura como código (Render)
-├── package.json                 # Scripts unificados de ejecución y testing
+├── package.json                 # Scripts monorepo para tests y builds unificados
 ├── README.md                    # Documentación académica completa
 └── .gitignore                   # Exclusión de credenciales y dependencias
 ```
@@ -199,7 +213,6 @@ cd "TP WEB"
 ```
 
 ### Paso 2: Instalar dependencias
-Podés instalar las dependencias de ambos proyectos ejecutando:
 ```bash
 cd backend && npm install
 cd ../frontend && npm install
@@ -207,13 +220,11 @@ cd ..
 ```
 
 ### Paso 3: Configurar variables de entorno
-Crear el archivo `.env` en la carpeta `backend/`:
 ```bash
 cp backend/.env.example backend/.env
 ```
 
 ### Paso 4: Poblar la base de datos (Seed)
-Ejecutá los scripts de inicialización:
 ```bash
 # Crear el usuario administrador y usuario de prueba
 npm run seed:admin
@@ -222,10 +233,9 @@ npm run seed:admin
 npm run seed:products
 ```
 
-> **Fallback Inteligente:** Si no tenés una instancia de MongoDB instalada localmente, el backend detecta automáticamente la ausencia del demonio e inicia un servidor embebido con `mongodb-memory-server` sin que tengas que instalar nada adicional.
+> **Fallback Inteligente:** Si no tenés una instancia de MongoDB instalada localmente, el backend detecta automáticamente la ausencia del demonio en `localhost` e inicia un servidor embebido con `mongodb-memory-server` sin que tengas que instalar nada adicional. En producción o al usar MongoDB Atlas, se exige de forma obligatoria una conexión persistente real.
 
 ### Paso 5: Iniciar los servidores de desarrollo
-En terminales separadas (o con los scripts del paquete raíz):
 ```bash
 # Terminal 1: Backend (Puerto 4000)
 npm run dev:backend
@@ -238,73 +248,55 @@ Abrí tu navegador en: **`http://localhost:5173`**
 
 ---
 
-## 10. Configuración de Variables de Entorno
+## 10. Guía Paso a Paso para Despliegue en Producción
 
-### Backend (`backend/.env`)
+### A. Crear y Conectar MongoDB Atlas
+1. Ingresá a [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) e iniciá sesión.
+2. Creá un cluster gratuito (M0 Sandbox).
+3. En **Database Access**, creá un usuario (ejemplo: `grabadoshub_admin`) con contraseña segura.
+4. En **Network Access**, agregá una regla de IP: `0.0.0.0/0` (permitir acceso desde cualquier origen, necesario para los servidores de Render).
+5. En **Database**, hacé clic en **Connect** > **Drivers** (Node.js) y copiá la URI de conexión:
+   `mongodb+srv://grabadoshub_admin:<PASSWORD>@cluster0.xxxxx.mongodb.net/grabadoshub?retryWrites=true&w=majority`
 
-| Variable | Tipo / Ejemplo | Descripción |
-| :--- | :--- | :--- |
-| `NODE_ENV` | `development` \| `production` | Modo de ejecución del servidor |
-| `PORT` | `4000` | Puerto HTTP en el que escucha Express |
-| `MONGODB_URI` | `mongodb://localhost:27017/grabadoshub` | URI de conexión a MongoDB local o MongoDB Atlas |
-| `BETTER_AUTH_SECRET` | `cadena_aleatoria_de_32_caracteres_minimo!` | Llave criptográfica para firmas de sesión |
-| `BETTER_AUTH_URL` | `http://localhost:4000` | URL base de la API de autenticación |
-| `FRONTEND_URL` | `http://localhost:5173` | Origen permitido para CORS y redirecciones OAuth |
-| `GITHUB_CLIENT_ID` | `tu_client_id` (opcional) | Identificador de aplicación OAuth en GitHub |
-| `GITHUB_CLIENT_SECRET` | `tu_client_secret` (opcional) | Secreto de aplicación OAuth en GitHub |
-
----
-
-## 11. Configuración de GitHub OAuth
-
-Para habilitar el botón "Ingresar con GitHub" en producción o entorno local:
-
-1. Ingresá a [GitHub Developer Settings](https://github.com/settings/developers).
-2. Hacé clic en **New OAuth App**.
-3. Completá los campos:
+### B. Crear Aplicación OAuth en GitHub
+1. Ingresá a tu cuenta de GitHub > **Settings** > **Developer Settings** > **OAuth Apps** > **New OAuth App**.
+2. Completá los campos:
    - **Application name:** `GrabadosHub`
-   - **Homepage URL:** `http://localhost:5173` (en local) o la URL de Render del frontend.
-   - **Authorization callback URL:**  
-     `http://localhost:4000/api/auth/callback/github` (en local) o  
-     `https://grabadoshub-backend.onrender.com/api/auth/callback/github` (en producción).
+   - **Homepage URL:** `https://grabadoshub-frontend.onrender.com` *(o URL de tu frontend)*
+   - **Authorization callback URL:** `https://grabadoshub-backend.onrender.com/api/auth/callback/github`
+3. Hacé clic en **Register application**.
 4. Generá un nuevo **Client Secret**.
-5. Copiá el `Client ID` y `Client Secret` en el archivo `.env` del backend (o en las variables de Render).
+5. Guardá tu `Client ID` y `Client Secret` para configurarlos en Render.
+
+### C. Subir el Repositorio a GitHub
+```bash
+git remote add origin https://github.com/<TU_USUARIO>/grabadoshub.git
+git branch -M main
+git push -u origin main
+```
+
+### D. Desplegar en Render con Blueprint (Recomendado)
+1. En [Render Dashboard](https://dashboard.render.com), hacé clic en **New** > **Blueprint**.
+2. Conectá tu repositorio de GitHub.
+3. Render detectará automáticamente el archivo `render.yaml` y preconfigurará el Web Service y el Static Site.
+4. Completá los valores secretos en el panel de Render:
+   - `MONGODB_URI`: Tu cadena de conexión de MongoDB Atlas.
+   - `GITHUB_CLIENT_ID`: Tu Client ID de GitHub.
+   - `GITHUB_CLIENT_SECRET`: Tu Client Secret de GitHub.
+5. Hacé clic en **Apply**.
+
+### E. Inicializar los Datos de Producción (Seed en Atlas)
+Una vez desplegado el backend en Render, podés inicializar los productos y el usuario administrador en tu cluster de Atlas:
+```bash
+MONGODB_URI="tu_uri_de_atlas" NODE_ENV=production npm run seed:admin
+MONGODB_URI="tu_uri_de_atlas" NODE_ENV=production npm run seed:products
+```
 
 ---
 
-## 12. Despliegue en Render
+## 11. Pruebas Automatizadas y Calidad de Código
 
-El proyecto incluye la especificación declarativa completa en `render.yaml` para despliegue simultáneo en **Render**:
-
-### A. Backend (Web Service)
-- **Environment:** Node
-- **Root Directory:** `backend`
-- **Build Command:** `npm install && npm run build`
-- **Start Command:** `npm start`
-- **Variables requeridas en Render:**
-  - `NODE_ENV`: `production`
-  - `MONGODB_URI`: Cadena de conexión de MongoDB Atlas (ej: `mongodb+srv://user:pass@cluster0.mongodb.net/grabadoshub?retryWrites=true&w=majority`)
-  - `BETTER_AUTH_SECRET`: Generado automáticamente por Render o cadena aleatoria segura de 32+ caracteres.
-  - `BETTER_AUTH_URL`: URL asignada por Render al backend (ej: `https://grabadoshub-backend.onrender.com`).
-  - `FRONTEND_URL`: URL asignada por Render al frontend (ej: `https://grabadoshub-frontend.onrender.com`).
-
-### B. Frontend (Static Site)
-- **Root Directory:** `frontend`
-- **Build Command:** `npm install && npm run build`
-- **Publish Directory:** `dist`
-- **Reglas de Redirección (Routes en Render):**
-  1. **Rewrite de API:**  
-     `Source: /api/*` ➡️ `Destination: https://grabadoshub-backend.onrender.com/api/*`
-  2. **Rewrite de SPA (Single Page Application):**  
-     `Source: /*` ➡️ `Destination: /index.html`
-
-> El frontend consume exclusivamente rutas relativas `/api`, lo cual previene problemas de cookies entre dominios y asegura la persistencia de sesión al recargar la página (F5) o navegar directamente.
-
----
-
-## 13. Pruebas Automatizadas y Calidad de Código
-
-El proyecto cuenta con **21 pruebas automatizadas** que validan la funcionalidad y seguridad de extremo a extremo:
+El proyecto cuenta con **40 pruebas automatizadas** que validan la funcionalidad y seguridad de extremo a extremo:
 
 Para ejecutar todas las pruebas:
 ```bash
@@ -313,7 +305,7 @@ npm test
 
 ### Resultados de la Suite Automatizada
 ```text
-✓ Backend REST API & Auth Suite (15 tests)
+✓ Backend REST API & Auth Suite (15/15 tests)
   ✓ GET /api/health retorna 200 y conexión activa a base de datos
   ✓ GET /api/products es público y retorna paginación correcta
   ✓ GET /api/products/:id retorna 400 ante ObjectId con formato inválido
@@ -330,7 +322,28 @@ npm test
   ✓ DELETE /api/products/:id con usuario regular rechaza con 403 Forbidden
   ✓ DELETE /api/products/:id con admin elimina el producto con 204 No Content
 
-✓ Frontend Components & Pages Suite (6 tests)
+✓ Backend E2E Full Lifecycle Audit Suite (19/19 tests)
+  ✓ E2E 1: Registro de usuario regular y persistencia en MongoDB con role: 'user'
+  ✓ E2E 2: Validación de contraseñas hasheadas en MongoDB (no texto plano)
+  ✓ E2E 3: Rechazo de login ante credenciales erróneas (401/400)
+  ✓ E2E 4: Login exitoso por email y contraseña emitiendo cookies de sesión
+  ✓ E2E 5: Comprobación de documento de sesión en MongoDB colección 'session'
+  ✓ E2E 6: Persistencia y validación de sesión activa mediante GET /api/auth/get-session
+  ✓ E2E 7: Bloqueo de usuario común en métricas (403 Forbidden)
+  ✓ E2E 8: Bloqueo de usuario común en creación de productos (403 Forbidden)
+  ✓ E2E 9: Bloqueo de usuario común en edición de productos (403 Forbidden)
+  ✓ E2E 10: Bloqueo de usuario común en eliminación de productos (403 Forbidden)
+  ✓ E2E 11: Cierre de sesión (Logout) con revocación efectiva del token en MongoDB
+  ✓ E2E 12: Comprobación de que sesión revocada retorna null
+  ✓ E2E 13: Creación y login de administrador con acceso a métricas
+  ✓ E2E 14: Rechazo de esquemas inválidos por Zod con errores de campo detallados
+  ✓ E2E 15: Creación de producto por administrador y persistencia en MongoDB
+  ✓ E2E 16: Filtrado por categoría (category=Ecocuero)
+  ✓ E2E 17: Filtrado por disponibilidad (available=true)
+  ✓ E2E 18: Búsqueda reactiva por texto y paginación con metadata
+  ✓ E2E 19: GitHub OAuth Sign-In flow con redirección oficial a GitHub
+
+✓ Frontend Components & Pages Suite (6/6 tests)
   ✓ ProductCard renderiza título, categoría, badge de stock y precio en ARS
   ✓ ProductCard muestra estado 'Sin Stock' cuando la disponibilidad es 0
   ✓ ProductFilter maneja búsqueda, selección de categorías y filtros reactivos
@@ -341,6 +354,6 @@ npm test
 
 ---
 
-## 14. Licencia y Créditos Académicos
+## 12. Licencia y Créditos Académicos
 
 Desarrollado como proyecto para el **Trabajo Práctico N° 2 de la materia Metodologías y Desarrollos Web** en la **Universidad Abierta Interamericana (UAI)**.
